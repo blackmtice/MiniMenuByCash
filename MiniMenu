@@ -1,0 +1,130 @@
+-- Criando a GUI
+local player = game.Players.LocalPlayer
+local screenGui = Instance.new("ScreenGui", game.CoreGui)
+screenGui.Name = "MiniMenu"
+ 
+-- Criando o quadro principal
+local frame = Instance.new("Frame", screenGui)
+frame.Size = UDim2.new(0, 250, 0, 50)
+frame.Position = UDim2.new(0, 10, 0, 10)
+frame.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+frame.BackgroundTransparency = 0.15
+frame.BorderSizePixel = 0
+frame.Active = true
+frame.Draggable = true
+ 
+local uiCorner = Instance.new("UICorner", frame)
+uiCorner.CornerRadius = UDim.new(0, 12)
+ 
+-- Criando título
+local title = Instance.new("TextLabel", frame)
+title.Size = UDim2.new(1, 0, 0, 35)
+title.Text = "MiniMenu By Cash"
+title.TextColor3 = Color3.fromRGB(255, 255, 255)
+title.BackgroundColor3 = Color3.fromRGB(10, 10, 10)
+title.Font = Enum.Font.SourceSansBold
+title.TextSize = 18
+ 
+-- Criando botão para abrir o menu
+local toggleButton = Instance.new("TextButton", frame)
+toggleButton.Size = UDim2.new(0, 30, 0, 30)
+toggleButton.Position = UDim2.new(1, -35, 0, 5)
+toggleButton.Text = "+"
+toggleButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+toggleButton.BackgroundColor3 = Color3.fromRGB(0, 150, 0)
+toggleButton.Font = Enum.Font.SourceSansBold
+toggleButton.TextSize = 18
+ 
+-- Criando submenu
+local subMenu = Instance.new("Frame", frame)
+subMenu.Size = UDim2.new(1, 0, 0, 350)
+subMenu.Position = UDim2.new(0, 0, 0, 50)
+subMenu.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+subMenu.Visible = false
+ 
+local uiCornerSub = Instance.new("UICorner", subMenu)
+uiCornerSub.CornerRadius = UDim.new(0, 12)
+ 
+-- Função para abrir/fechar menu
+toggleButton.MouseButton1Click:Connect(function()
+    subMenu.Visible = not subMenu.Visible
+    frame.Size = subMenu.Visible and UDim2.new(0, 250, 0, 400) or UDim2.new(0, 250, 0, 50)
+    toggleButton.Text = subMenu.Visible and "-" or "+"
+end)
+ 
+-- Criando botões de categorias
+local function createCategoryButton(parent, text, position)
+    local button = Instance.new("TextButton", parent)
+    button.Size = UDim2.new(1, -20, 0, 30)
+    button.Position = UDim2.new(0, 10, 0, position)
+    button.Text = text
+    button.TextColor3 = Color3.fromRGB(255, 255, 255)
+    button.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+    button.Font = Enum.Font.SourceSansBold
+    button.TextSize = 16
+    button.AutoButtonColor = false
+ 
+    local uiCorner = Instance.new("UICorner", button)
+    uiCorner.CornerRadius = UDim.new(0, 8)
+ 
+    return button
+end
+ 
+local movementButton = createCategoryButton(subMenu, "⚡ Movimentação", 10)
+local utilitiesButton = createCategoryButton(subMenu, "🔧 Utilidades", 50)
+ 
+-- Criando submenus ocultos
+local movementSubMenu = Instance.new("Frame", subMenu)
+movementSubMenu.Size = UDim2.new(1, 0, 0, 150)
+movementSubMenu.Position = UDim2.new(0, 0, 0, 90)
+movementSubMenu.BackgroundTransparency = 1
+movementSubMenu.Visible = false
+ 
+local utilitiesSubMenu = Instance.new("Frame", subMenu)
+utilitiesSubMenu.Size = UDim2.new(1, 0, 0, 150)
+utilitiesSubMenu.Position = UDim2.new(0, 0, 0, 90)
+utilitiesSubMenu.BackgroundTransparency = 1
+utilitiesSubMenu.Visible = false
+ 
+-- Criando botões dentro dos submenus
+local function createSubButton(parent, text, position)
+    local button = Instance.new("TextButton", parent)
+    button.Size = UDim2.new(1, -20, 0, 30)
+    button.Position = UDim2.new(0, 10, 0, position)
+    button.Text = text
+    button.TextColor3 = Color3.fromRGB(255, 255, 255)
+    button.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+    button.Font = Enum.Font.SourceSansBold
+    button.TextSize = 14
+    button.AutoButtonColor = false
+ 
+    local uiCorner = Instance.new("UICorner", button)
+    uiCorner.CornerRadius = UDim.new(0, 6)
+ 
+    return button
+end
+ 
+local movementButtons = {
+    createSubButton(movementSubMenu, "Fly (J)", 0),
+    createSubButton(movementSubMenu, "Speed (G)", 35),
+    createSubButton(movementSubMenu, "Jump Power (B)", 70),
+    createSubButton(movementSubMenu, "NoClip (M)", 105),
+}
+ 
+local utilitiesButtons = {
+    createSubButton(utilitiesSubMenu, "Hitbox (H)", 0),
+    createSubButton(utilitiesSubMenu, "ESP (K)", 35),
+    createSubButton(utilitiesSubMenu, "God Mode (N)", 70),
+    createSubButton(utilitiesSubMenu, "Invisibilidade (V)", 105),
+}
+ 
+-- Mostrar/Esconder submenus
+movementButton.MouseButton1Click:Connect(function()
+    movementSubMenu.Visible = not movementSubMenu.Visible
+    utilitiesSubMenu.Visible = false
+end)
+ 
+utilitiesButton.MouseButton1Click:Connect(function()
+    utilitiesSubMenu.Visible = not utilitiesSubMenu.Visible
+    movementSubMenu.Visible = false
+end)
